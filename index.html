@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="FocusFlow — a modern productivity dashboard built with HTML, CSS and JavaScript."
+  >
+
+  <title>FocusFlow | Productivity Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <a href="#" class="brand">
+        <span class="brand-mark">F</span>
+        <span>Focus<span>Flow</span></span>
+      </a>
+
+      <nav class="nav" aria-label="Main navigation">
+
+        <a href="#dashboard" class="nav-link active">
+          <span>⌂</span>
+          Dashboard
+        </a>
+
+        <a href="#tasks" class="nav-link">
+          <span>✓</span>
+          Tasks
+        </a>
+
+        <a href="#focus" class="nav-link">
+          <span>◷</span>
+          Focus
+        </a>
+
+        <a href="#notes" class="nav-link">
+          <span>✎</span>
+          Notes
+        </a>
+
+      </nav>
+
+      <div class="sidebar-card">
+
+        <span class="eyebrow">TODAY'S GOAL</span>
+
+        <strong id="sidebarGoal">
+          0 / 5 tasks
+        </strong>
+
+        <div class="progress">
+          <span id="sidebarProgress"></span>
+        </div>
+
+        <small id="sidebarMessage">
+          Start with one small task.
+        </small>
+
+      </div>
+
+      <div class="sidebar-footer">
+        <span>Built with</span>
+        <strong>HTML · CSS · JS</strong>
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+
+        <div>
+
+          <p class="eyebrow" id="dateLabel">
+            TODAY
+          </p>
+
+          <h1>
+            Good to see you<span class="accent">.</span>
+          </h1>
+
+        </div>
+
+        <div class="top-actions">
+
+          <div class="streak-badge">
+
+            <span>🔥</span>
+
+            <strong id="streakCount">
+              0
+            </strong>
+
+            <small>
+              today
+            </small>
+
+          </div>
+
+          <button
+            class="icon-btn"
+            id="clearDataBtn"
+            type="button"
+            title="Reset all data"
+            aria-label="Reset all data"
+          >
+            ↻
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="hero-grid">
+
+        <div class="welcome-card">
+
+          <div class="welcome-copy">
+
+            <span class="eyebrow">
+              FOCUS MODE
+            </span>
+
+            <h2>
+              Make progress,<br>
+              <span>not excuses.</span>
+            </h2>
+
+            <p>
+              Plan your day, focus on one thing at a time,
+              and keep your momentum.
+            </p>
+
+            <a href="#tasks" class="primary-btn">
+              View my tasks
+              <span>→</span>
+            </a>
+
+          </div>
+
+          <div class="orb" aria-hidden="true">
+            <span>FOCUS</span>
+          </div>
+
+        </div>
+
+
+        <!-- STATS -->
+        <div class="stats-grid">
+
+          <article class="stat-card">
+
+            <span class="stat-icon">
+              ✓
+            </span>
+
+            <div>
+              <small>Completed</small>
+              <strong id="completedStat">0</strong>
+            </div>
+
+          </article>
+
+
+          <article class="stat-card">
+
+            <span class="stat-icon">
+              ○
+            </span>
+
+            <div>
+              <small>Remaining</small>
+              <strong id="remainingStat">0</strong>
+            </div>
+
+          </article>
+
+
+          <article class="stat-card">
+
+            <span class="stat-icon">
+              ◷
+            </span>
+
+            <div>
+              <small>Focus sessions</small>
+              <strong id="sessionsStat">0</strong>
+            </div>
+
+          </article>
+
+
+          <article class="stat-card">
+
+            <span class="stat-icon">
+              %
+            </span>
+
+            <div>
+              <small>Progress</small>
+              <strong id="progressStat">0%</strong>
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- TASKS -->
+      <section id="tasks" class="section-block">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              YOUR DAY
+            </span>
+
+            <h2>
+              Tasks
+            </h2>
+
+          </div>
+
+
+          <div
+            class="filter-group"
+            role="group"
+            aria-label="Task filters"
+          >
+
+            <button
+              class="filter active"
+              data-filter="all"
+              type="button"
+            >
+              All
+            </button>
+
+            <button
+              class="filter"
+              data-filter="active"
+              type="button"
+            >
+              Active
+            </button>
+
+            <button
+              class="filter"
+              data-filter="completed"
+              type="button"
+            >
+              Done
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ADD TASK -->
+        <form
+          id="taskForm"
+          class="task-form"
+          autocomplete="off"
+        >
+
+          <input
+            id="taskInput"
+            type="text"
+            maxlength="100"
+            placeholder="What needs to get done?"
+            aria-label="New task"
+            required
+          >
+
+          <button
+            class="primary-btn"
+            type="submit"
+          >
+            Add task
+            <span>+</span>
+          </button>
+
+        </form>
+
+
+        <div
+          id="taskList"
+          class="task-list"
+          aria-live="polite"
+        ></div>
+
+
+        <p
+          id="emptyState"
+          class="empty-state"
+        >
+          No tasks here yet. Add one above and get moving.
+        </p>
+
+      </section>
+
+
+      <!-- FOCUS + NOTES -->
+      <section id="focus" class="section-block two-column">
+
+
+        <!-- FOCUS TIMER -->
+        <div class="panel timer-panel">
+
+          <div class="section-heading compact">
+
+            <div>
+
+              <span class="eyebrow">
+                DEEP WORK
+              </span>
+
+              <h2>
+                Focus Timer
+              </h2>
+
+            </div>
+
+            <span
+              class="timer-status"
+              id="timerStatus"
+            >
+              Ready
+            </span>
+
+          </div>
+
+
+          <div class="timer">
+
+            <div class="timer-ring">
+
+              <span id="timerDisplay">
+                25:00
+              </span>
+
+              <small>
+                FOCUS
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- TIMER PRESETS -->
+          <div class="timer-presets">
+
+            <button
+              type="button"
+              class="preset active"
+              data-minutes="25"
+            >
+              25 min
+            </button>
+
+            <button
+              type="button"
+              class="preset"
+              data-minutes="15"
+            >
+              15 min
+            </button>
+
+            <button
+              type="button"
+              class="preset"
+              data-minutes="5"
+            >
+              5 min
+            </button>
+
+          </div>
+
+
+          <!-- TIMER CONTROLS -->
+          <div class="timer-controls">
+
+            <button
+              class="primary-btn"
+              id="timerStart"
+              type="button"
+            >
+              Start focus
+            </button>
+
+            <button
+              class="secondary-btn"
+              id="timerReset"
+              type="button"
+            >
+              Reset
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- NOTES -->
+        <div
+          id="notes"
+          class="panel notes-panel"
+        >
+
+          <div class="section-heading compact">
+
+            <div>
+
+              <span class="eyebrow">
+                QUICK CAPTURE
+              </span>
+
+              <h2>
+                Notes
+              </h2>
+
+            </div>
+
+            <span
+              class="save-state"
+              id="saveState"
+            >
+              Saved
+            </span>
+
+          </div>
+
+
+          <textarea
+            id="notesInput"
+            maxlength="2000"
+            placeholder="Ideas, reminders, anything worth keeping..."
+          ></textarea>
+
+
+          <div class="notes-footer">
+
+            <span id="characterCount">
+              0 / 2000
+            </span>
+
+            <button
+              class="secondary-btn"
+              id="clearNotes"
+              type="button"
+            >
+              Clear notes
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- FOOTER -->
+      <footer class="footer">
+
+        <span>
+          FocusFlow
+        </span>
+
+        <span>
+          Designed & built with vanilla JavaScript.
+        </span>
+
+      </footer>
+
+    </main>
+
+  </div>
+
+
+  <!-- TOAST MESSAGE -->
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
